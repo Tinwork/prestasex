@@ -1,0 +1,2 @@
+# prestasex
+Theme Prestashop
