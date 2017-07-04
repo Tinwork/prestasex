@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>prestasex</name>
+    <displayName><![CDATA[Prestasex Module]]></displayName>
+    <version><![CDATA[1.0.0]]></version>
+    <description><![CDATA[Module et th&egrave;me Prestashop]]></description>
+    <author><![CDATA[Did Youn - Marc Intha Amnouay - Antoine Renault]]></author>
+    <tab><![CDATA[front_office_feature]]></tab>
+    <is_configurable>1</is_configurable>
+    <need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+</module>
