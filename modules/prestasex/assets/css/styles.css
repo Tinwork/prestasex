@@ -1,0 +1,95 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+.product-info h1 {
+    text-align: center;
+}
+
+.product-info img {
+    display: block;
+    margin: 0 auto;
+}
+
+.comments {
+    margin: 20px 0;
+}
+
+.comment .content {
+    font-size: 18px;
+}
+
+.rating-star:before {
+    margin-right: 5px;
+    font-size: 1.25em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+    width: 16px;
+    height: 16px;
+    color: #ddd;
+}
+
+.rating-star.full:before {
+    color: #FFD700;
+}
+
+.rating-star.half:before {
+    color: #FFD700;
+}
+
+.no-comments {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.no-comments span {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.tabs {
+    display: block;
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: whitesmoke;
+}
+
+.tabs .page-product-heading {
+    text-align: center;
+}
+
+.rating {
+    border: none;
+    float: left;
+}
+
+.rating > input { display: none; }
+
+.rating > label:before {
+    margin: 5px;
+    font-size: 1.25em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+}
+
+.rating > .half:before {
+    content: "\f089";
+    position: absolute;
+}
+
+.rating > label {
+    color: #ddd;
+    float: right;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
