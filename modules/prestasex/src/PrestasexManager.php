@@ -13,6 +13,14 @@ class PrestasexManager
 {
     /** @var string FORM_COMMENTS_KEY */
     const FORM_COMMENTS_KEY = "prestasex_pc_submit_comment";
+    /** @var string FORM_PRODUCT_COMMENTS_KEY */
+    const FORM_PRODUCT_COMMENTS_KEY = "prestasex_pc_product_submit_comment";
+    /** @var string FORM_CONFIG_KEY */
+    const FORM_CONFIG_KEY = "submit_prestasex_form_config";
+    /** @var string CONFIG_ITEMS */
+    const CONFIG_ITEMS = "PRESTASEX_CONFIG_ITEMS";
+    /** @var string CONFIG_COLOR */
+    const CONFIG_COLOR = "PRESTASEX_CONFIG_COLOR";
     /** @var PrestasexComments $model */
     private $model;
     /** @var Link $link */
@@ -39,9 +47,7 @@ class PrestasexManager
      */
     public function getProductEntity()
     {
-        $product = new Product($this->getProductTarget());
-
-        return $product ? $product : null;
+        return $this->getProductTarget() ? new Product($this->getProductTarget()) : null;
     }
 
     /**
@@ -52,6 +58,9 @@ class PrestasexManager
     public function getProductImagePath()
     {
         $product = $this->getProductEntity();
+        if (!$product) {
+            return null;
+        }
         $image = Image::getCover($product->id);
         $links = $product->link_rewrite;
 
@@ -59,23 +68,37 @@ class PrestasexManager
     }
 
     /**
-     * Load comments from product target
+     * Get config values for admin panel
      *
      * @return array
      */
-    public function getComments()
+    public function getConfigurationValues()
     {
-        return $this->model->getComments();
+        return [
+            'items' => Configuration::get(self::CONFIG_ITEMS),
+            'color' => Configuration::get(self::CONFIG_COLOR)
+        ];
     }
 
     /**
-     * Process submit form commentary
+     * Load comments from product target
+     *
+     * @param int $limit
+     * @return array
+     */
+    public function getComments($limit = null)
+    {
+        return $this->model->getComments($limit);
+    }
+
+    /**
+     * Process submit form
      *
      * @return $this
      */
-    public function processFormComments()
+    public function processForm()
     {
-        if (Tools::isSubmit(self::FORM_COMMENTS_KEY)) {
+        if (Tools::isSubmit(self::FORM_COMMENTS_KEY) || Tools::isSubmit(self::FORM_PRODUCT_COMMENTS_KEY)) {
             $insert = new PrestasexComments();
             $insert->hydrate([
                 'id_product'    => $this->getProductTarget(),
@@ -85,6 +108,17 @@ class PrestasexManager
             $res = $insert->save();
 
             return $res ? $this->context->smarty->assign('confirmation', true) : $this->context->smarty->assign('confirmation', false);
+        }
+        if (Tools::isSubmit(self::FORM_CONFIG_KEY)) {
+            $items = Tools::getValue('miniatures');
+            $color = Tools::getValue('color');
+            if (!isset($items) || !is_numeric($items)) {
+                $items = 12;
+            }
+            Configuration::updateValue(self::CONFIG_ITEMS, $items);
+            Configuration::updateValue(self::CONFIG_COLOR, $color);
+
+            return $this->context->smarty->assign('confirmation', true);
         }
 
         return $this;
@@ -107,6 +141,6 @@ class PrestasexManager
      */
     protected function getProductTarget()
     {
-        return Tools::getValue('product') ? Tools::getValue('product') : null;
+        return Tools::getValue('id_product') ? Tools::getValue('id_product') : null;
     }
 }

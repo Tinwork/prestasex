@@ -3,7 +3,7 @@
 /**
  * Class PrestasexCommentsModuleFrontController
  *
- * @package             Module\Prestasex\Controllers\Front
+ * @package             Modules\Prestasex\Controllers\Front
  * @author              Didier Youn <didier.youn@gmail.com>, Marc Intha-Amnouay <marc.inthaamnouay@gmail.com>, Antoine Renault <antoine.renault.mmi@gmail.com>
  * @copyright           Copyright (c) 2017 Tinwork
  * @license             http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -41,7 +41,7 @@ class PrestasexCommentsModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
 
-        $this->manager->processFormComments();
+        $this->manager->processForm();
 
         $this->context->smarty->assign('product', $this->manager->getProductEntity());
         $this->context->smarty->assign('product_thumbnail', $this->manager->getProductImagePath());

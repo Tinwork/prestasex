@@ -7,7 +7,7 @@
  * @author              Didier Youn <didier.youn@gmail.com>, Marc Intha-Amnouay <marc.inthaamnouay@gmail.com>, Antoine Renault <antoine.renault.mmi@gmail.com>
  * @copyright           Copyright (c) 2017 Tinwork
  * @license             http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @link                https://github.com/Tinwork/prestasex
+ * @link                https://github.com/Tinwork/ZendPokemon
  */
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -21,6 +21,8 @@ class Prestasex extends Module
 {
     /** @var PrestasexCommentsRepository $prestasexCommentsRepository */
     private $prestasexCommentsRepository;
+    /** @var PrestasexManager $manager */
+    private $manager;
 
     /**
      * Prestasex constructor.
@@ -40,6 +42,7 @@ class Prestasex extends Module
         parent::__construct();
 
         $this->prestasexCommentsRepository = new PrestasexCommentsRepository(Db::getInstance(), $this->context->shop, $this->getTranslator());
+        $this->manager = new PrestasexManager($this->context);
     }
 
     /**
@@ -50,7 +53,8 @@ class Prestasex extends Module
         return parent::install()
             && $this->prestasexCommentsRepository->createTables()
             && $this->registerHook('displayReassurance')
-            && $this->registerHook('actionFrontControllerSetMedia');
+            && $this->registerHook('actionFrontControllerSetMedia')
+            && $this->registerHook('actionAdminControllerSetMedia');
     }
 
     /**
@@ -69,6 +73,9 @@ class Prestasex extends Module
      */
     public function getContent()
     {
+        $this->manager->processForm();
+        $this->context->smarty->assign('config', $this->manager->getConfigurationValues());
+
         return $this->display(__FILE__, 'getContent.tpl');
     }
 
@@ -97,12 +104,31 @@ class Prestasex extends Module
     }
 
     /**
+     * Register JS and CSS files
+     *
+     * @param $params
+     */
+    public function hookActionAdminControllerSetMedia($params)
+    {
+        $this->context->controller->addJS(array(
+            $this->_path . 'assets/js/spectrum.js',
+            $this->_path . 'assets/js/admin.js'
+        ));
+        $this->context->controller->addCSS(array(
+            $this->_path . 'assets/css/spectrum.css'
+        ));
+    }
+
+    /**
      * Render block
      *
      * @return string
      */
     public function hookDisplayReassurance()
     {
+        $this->manager->processForm();
+        $this->context->smarty->assign('comments', $this->manager->getComments(3));
+
         return $this->display(__FILE__, 'displayReassurance.tpl');
     }
 }

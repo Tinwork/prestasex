@@ -43,9 +43,10 @@ class PrestasexComments extends ObjectModel
     /**
      * Return comments from the current product
      *
+     * @param int $limit
      * @return array
      */
-    public function getComments()
+    public function getComments($limit = null)
     {
         if (!$this->id_product) {
              return [];
@@ -55,6 +56,9 @@ class PrestasexComments extends ObjectModel
         $sql->select('*');
         $sql->from($this->table, 'c');
         $sql->where('c.id_product = ' . $this->id_product);
+        if ($limit) {
+            $sql->limit($limit);
+        }
         $sql->orderBy('date_add');
 
         $comments = Db::getInstance()->executeS($sql);
