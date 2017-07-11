@@ -13,6 +13,9 @@ meta:
     layout-full-width:
       name: Full Width
       description: No side columns, ideal for distraction-free pages such as product pages.
+    layout-full-width-custom:
+      name: Full Width Custom
+      description: No side columns, ideal for distraction-free pages such as product pages.
     layout-both-columns:
       name: Three Columns
       description: One large central column and 2 side columns.
@@ -63,10 +66,7 @@ global_settings:
         - ps_mainmenu
         - ps_searchbar
       displayHome:
-        - ps_imageslider
         - ps_featuredproducts
-        - ps_banner
-        - ps_customtext
       displayFooterBefore:
         - ps_emailsubscription
         - ps_socialfollow
@@ -126,3 +126,4 @@ theme_settings:
     new-products: layout-left-column
     prices-drop: layout-left-column
     contact: layout-left-column
+

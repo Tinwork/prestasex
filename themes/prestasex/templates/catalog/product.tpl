@@ -1,27 +1,3 @@
-{**
- * 2007-2017 PrestaShop
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@prestashop.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade PrestaShop to newer
- * versions in the future. If you wish to customize PrestaShop for your
- * needs please refer to http://www.prestashop.com for more information.
- *
- * @author    PrestaShop SA <contact@prestashop.com>
- * @copyright 2007-2017 PrestaShop SA
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * International Registered Trademark & Property of PrestaShop SA
- *}
 {extends file=$layout}
 
 {block name='head_seo' prepend}
@@ -45,24 +21,42 @@
   {/if}
 {/block}
 
+{block name='header'}
+    <div class="header-product-cover" id="header-product-cover" style="background-image: url({$product.cover.large.url})"></div>
+    <div class="header-aside" id="header-aside">
+        {block name='header_banner'}
+            <div class="header-banner">
+                {hook h='displayBanner'}
+            </div>
+        {/block}
+
+        {block name='header_nav'}
+            <nav class="header-nav">
+                {hook h='displayNav1'}
+            </nav>
+        {/block}
+
+        {block name='header_top'}
+            <div class="header-top">
+            </div>
+            {hook h='displayNavFullWidth'}
+        {/block}
+    </div>
+
+    <div class="header-button-toggle" id="header-button-toggle">
+        <span id="button-toggle"></span>
+    </div>
+{/block}
+
 {block name='content'}
 
   <section id="main" itemscope itemtype="https://schema.org/Product">
     <meta itemprop="url" content="{$product.url}">
 
-    <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-12 col-lg-12">
         {block name='page_content_container'}
-          <section class="page-content" id="content">
+          <section class="page-content" id="content" style="padding: 0; margin: 0;">
             {block name='page_content'}
-              {block name='product_flags'}
-                <ul class="product-flags">
-                  {foreach from=$product.flags item=flag}
-                    <li class="product-flag {$flag.type}">{$flag.label}</li>
-                  {/foreach}
-                </ul>
-              {/block}
-
               {block name='product_cover_thumbnails'}
                 {include file='catalog/_partials/product-cover-thumbnails.tpl'}
               {/block}
@@ -75,14 +69,11 @@
           </section>
         {/block}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12 col-lg-12">
           {block name='page_header_container'}
             {block name='page_header'}
               <h1 class="h1" itemprop="name">{block name='page_title'}{$product.name}{/block}</h1>
             {/block}
-          {/block}
-          {block name='product_prices'}
-            {include file='catalog/_partials/product-prices.tpl'}
           {/block}
 
           <div class="product-information">
@@ -90,22 +81,46 @@
               <div id="product-description-short-{$product.id}" itemprop="description">{$product.description_short nofilter}</div>
             {/block}
 
-            {if $product.is_customizable && count($product.customizations.fields)}
-              {block name='product_customization'}
-                {include file="catalog/_partials/product-customization.tpl" customizations=$product.customizations}
-              {/block}
-            {/if}
 
+              {block name='product_availability'}
+                  <span id="product-availability">
+                  {if $product.show_availability && $product.availability_message}
+                      {if $product.availability == 'available'}
+                          <i class="material-icons product-available">&#xE5CA;</i>
+                    {elseif $product.availability == 'last_remaining_items'}
+                      <i class="material-icons product-last-items">&#xE002;</i>
+                    {else}
+                      <i class="material-icons product-unavailable">&#xE14B;</i>
+                      {/if}
+                      {$product.availability_message}
+                  {/if}
+                </span>
+              {/block}
+          </div>
+            <hr>
             <div class="product-actions">
-              {block name='product_buy'}
+                {block name='product_quantity'}
+                    <div class="product-quantity">
+                        <div class="qty">
+                            <input
+                                    type="text"
+                                    name="qty"
+                                    id="quantity_wanted"
+                                    value="{$product.quantity_wanted}"
+                                    class="input-group"
+                                    min="{$product.minimal_quantity}"
+                            >
+                        </div>
+                    </div>
+                {/block}
+                {block name='product_variants'}
+                    {include file='catalog/_partials/product-variants.tpl'}
+                {/block}
+                {block name='product_buy'}
                 <form action="{$urls.pages.cart}" method="post" id="add-to-cart-or-refresh">
                   <input type="hidden" name="token" value="{$static_token}">
                   <input type="hidden" name="id_product" value="{$product.id}" id="product_page_product_id">
                   <input type="hidden" name="id_customization" value="{$product.id_customization}" id="product_customization_id">
-
-                  {block name='product_variants'}
-                    {include file='catalog/_partials/product-variants.tpl'}
-                  {/block}
 
                   {block name='product_pack'}
                     {if $packItems}
@@ -123,15 +138,6 @@
                   {block name='product_discounts'}
                     {include file='catalog/_partials/product-discounts.tpl'}
                   {/block}
-
-                  {block name='product_add_to_cart'}
-                    {include file='catalog/_partials/product-add-to-cart.tpl'}
-                  {/block}
-
-                  {block name='product_additional_info'}
-                    {include file='catalog/_partials/product-additional-info.tpl'}
-                  {/block}
-
                   {block name='product_refresh'}
                     <input class="product-refresh ps-hidden-by-js" name="refresh" type="submit" value="{l s='Refresh' d='Shop.Theme.Actions'}">
                   {/block}
@@ -139,6 +145,30 @@
               {/block}
 
             </div>
+            <hr>
+            <div class="product-price">
+                {block name='product_prices'}
+                    {include file='catalog/_partials/product-prices.tpl'}
+                {/block}
+                <div class="add">
+                    <button
+                            class="btn btn-primary add-to-cart"
+                            data-button-action="add-to-cart"
+                            type="submit"
+                            {if !$product.add_to_cart_url}
+                                disabled
+                            {/if}
+                    >
+                        <i class="material-icons shopping-cart">&#xE547;</i>
+                        {l s='Add to cart' d='Shop.Theme.Actions'}
+                    </button>
+                </div>
+            </div>
+            <hr>
+
+            {block name='product_additional_info'}
+                {include file='catalog/_partials/product-additional-info.tpl'}
+            {/block}
 
             {block name='hook_display_reassurance'}
               {hook h='displayReassurance'}
@@ -212,8 +242,6 @@
             {/block}
           </div>
         </div>
-      </div>
-    </div>
 
     {block name='product_accessories'}
       {if $accessories}

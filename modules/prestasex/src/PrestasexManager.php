@@ -9,6 +9,15 @@
  * @license             http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @link                https://github.com/Tinwork/prestasex
  */
+use PrestaShop\PrestaShop\Adapter\Category\CategoryProductSearchProvider;
+use PrestaShop\PrestaShop\Adapter\Image\ImageRetriever;
+use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
+use PrestaShop\PrestaShop\Core\Product\ProductListingPresenter;
+use PrestaShop\PrestaShop\Adapter\Product\ProductColorsRetriever;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchContext;
+use PrestaShop\PrestaShop\Core\Product\Search\ProductSearchQuery;
+use PrestaShop\PrestaShop\Core\Product\Search\SortOrder;
+
 class PrestasexManager
 {
     /** @var string FORM_COMMENTS_KEY */
@@ -78,6 +87,72 @@ class PrestasexManager
             'items' => Configuration::get(self::CONFIG_ITEMS),
             'color' => Configuration::get(self::CONFIG_COLOR)
         ];
+    }
+
+    /**
+     * Get product homepage
+     *
+     * @return array
+     */
+    public function getProductsHome()
+    {
+        $category = new Category((int) Configuration::get('HOME_FEATURED_CAT'));
+
+        $searchProvider = new CategoryProductSearchProvider(
+            $this->context->getTranslator(),
+            $category
+        );
+
+        $context = new ProductSearchContext($this->context);
+
+        $query = new ProductSearchQuery();
+
+        $nProducts = (int)Configuration::get(self::CONFIG_ITEMS);
+        if ($nProducts < 0) {
+            $nProducts = 12;
+        }
+
+        $query
+            ->setResultsPerPage($nProducts)
+            ->setPage(1)
+        ;
+
+        if (Configuration::get('HOME_FEATURED_RANDOMIZE')) {
+            $query->setSortOrder(SortOrder::random());
+        } else {
+            $query->setSortOrder(new SortOrder('product', 'position', 'asc'));
+        }
+
+        $result = $searchProvider->runQuery(
+            $context,
+            $query
+        );
+
+        $assembler = new ProductAssembler($this->context);
+
+        $presenterFactory = new ProductPresenterFactory($this->context);
+        $presentationSettings = $presenterFactory->getPresentationSettings();
+        $presenter = new ProductListingPresenter(
+            new ImageRetriever(
+                $this->context->link
+            ),
+            $this->context->link,
+            new PriceFormatter(),
+            new ProductColorsRetriever(),
+            $this->context->getTranslator()
+        );
+
+        $products_for_template = [];
+
+        foreach ($result->getProducts() as $rawProduct) {
+            $products_for_template[] = $presenter->present(
+                $presentationSettings,
+                $assembler->assembleProduct($rawProduct),
+                $this->context->language
+            );
+        }
+
+        return $products_for_template;
     }
 
     /**

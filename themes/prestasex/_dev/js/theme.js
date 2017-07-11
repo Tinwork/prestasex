@@ -34,6 +34,7 @@ import './customer';
 import './listing';
 import './product';
 import './cart';
+import './prestasex';
 
 import DropDown from './components/drop-down';
 import Form from './components/form';
@@ -67,4 +68,5 @@ $(document).ready(() => {
   topMenu.init();
   productMinitature.init();
   productSelect.init();
+
 });

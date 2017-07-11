@@ -1,0 +1,264 @@
+@import "~bootstrap/scss/bootstrap";
+
+/*** HEADER ***/
+#header {
+  position: relative;
+
+  float: left;
+
+  width: 50%;
+  height: 100%;
+  .logo {
+    max-width: 100%;
+  }
+  a {
+    color: $gray-darker;
+    &:hover {
+      text-decoration: none;
+      color: $brand-primary;
+    }
+  }
+  .header-nav {
+    border-bottom: $gray-light 2px solid;
+    max-height: 50px;
+    margin-bottom: 30px;
+    #menu-icon {
+      vertical-align: middle;
+      cursor: pointer;
+      margin-left: rem(16px);
+      .material-icons {
+        line-height: 50px;
+      }
+    }
+    .right-nav {
+      @include display(flex);
+      @include flex-wrap(nowrap);
+      @include justify-content(flex-end);
+    }
+    .currency-selector {
+      margin-top: rem(15px);
+      margin-left: rem(15px);
+      white-space: nowrap;
+    }
+    .user-info {
+      margin-left: rem(40px);
+      margin-top: rem(15px);
+      text-align: right;
+      white-space: nowrap;
+      .account {
+        margin-left: $small-space;
+      }
+    }
+    .language-selector {
+      margin-top: rem(15px);
+      white-space: nowrap;
+    }
+    .cart-preview {
+      &.active {
+        background: $brand-primary;
+        a {
+          color: white;
+        }
+        i {
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+      .shopping-cart {
+        vertical-align: middle;
+      }
+      .body {
+        display: none;
+      }
+    }
+    .blockcart {
+      background: $gray-light;
+      height: rem(48px);
+      padding: rem(12px);
+      margin-left: rem(15px);
+      text-align: center;
+      white-space: nowrap;
+      a {
+        color: $gray;
+        &:hover {
+          color: $brand-primary;
+        }
+      }
+      &.active {
+        a:hover {
+          color: white;
+        }
+      }
+      .header {
+        margin-top: rem(2px);
+      }
+    }
+    .material-icons {
+      line-height: inherit;
+      &.expand-more {
+        margin-left: rem(-6px);
+      }
+    }
+  }
+  .header-top {
+    > .container {
+      position: relative;
+    }
+    padding-bottom: rem(20px);
+    .menu {
+      > ul {
+        > li {
+          float: left;
+        }
+      }
+      padding-left: 15px;
+      margin-bottom: rem(6px);
+    }
+    .position-static {
+      position: static;
+    }
+    a[data-depth="0"] {
+      color: $gray;
+      text-transform: uppercase;
+    }
+  }
+  .top-menu-link {
+    margin-left: $medium-space;
+  }
+}
+
+.popover {
+  font-family: inherit;
+}
+
+.header-aside {
+  position: absolute;
+  top: 0; left: 0;
+  display: block;
+  height: 100%;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.4);
+  transform: translateX(-250px);
+  transition: all 0.6s;
+  padding-top: 50px;
+  &.is-active {
+    transform: translateX(0);
+  }
+}
+
+.header-button-toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  cursor: pointer;
+
+  background-color: rgba(255, 255, 255, 0.8);
+  span {
+    display: inline-block;
+    width: 60%;
+    height: 2px;
+    background-color: black;
+    transition: all 0.4s;
+    &::before, &::after {
+      content: '';
+      display: inline-block;
+      width: 60%;
+      height: 2px;
+      background-color: black;
+      position: absolute;
+      transition: all 0.4s;
+    }
+
+    &::before {
+      transform: translateY(-6px);
+    }
+    &::after {
+      transform: translateY(6px);
+    }
+  }
+
+  &.is-active {
+    span {
+      background-color: transparent;
+      &::before {
+        transform: rotate(45deg);
+      }
+      &::after {
+        transform: rotate(-45deg);
+      }
+    }
+  }
+}
+
+.header-logo {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+
+  opacity: 0.6;
+
+  width: 60%;
+  height: 200px;
+
+  padding: 10px 25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-product-cover {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+
+  background-position: center;
+  background-image: url('../img/background_image.jpg');
+  background-size: cover;
+  transition: all 0.3s;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+@include media-breakpoint-down(sm) {
+  #header {
+    width: 100%;
+    height: auto;
+  }
+
+  .header-logo {
+    position: absolute;
+    top: 0; bottom: 0;
+    right: 0; left: 0;
+    transform: translateY(0);
+    width: 100%;
+    height: 100%;
+  }
+
+  .header-button-toggle {
+    z-index: 10;
+  }
+
+  .header-aside {
+    position: absolute;
+    z-index: 10;
+  }
+}
+
+@include media-breakpoint-down(xs) {
+  #header {
+    width: 100%;
+    height: auto;
+  }
+}

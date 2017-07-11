@@ -53,6 +53,8 @@ class Prestasex extends Module
         return parent::install()
             && $this->prestasexCommentsRepository->createTables()
             && $this->registerHook('displayReassurance')
+            && $this->registerHook('displayPrestaSexHeaderColor')
+            && $this->registerHook('displayPrestaSexHomeProducts')
             && $this->registerHook('actionFrontControllerSetMedia')
             && $this->registerHook('actionAdminControllerSetMedia');
     }
@@ -87,13 +89,6 @@ class Prestasex extends Module
     public function hookActionFrontControllerSetMedia($params)
     {
         $path = 'modules/'. $this->name . '/assets';
-        $this->context->controller->registerJavascript(
-            'prestasex_js',
-            $path .'/js/script.js',
-            [
-                'priority' => 10,
-            ]
-        );
         $this->context->controller->registerStylesheet(
             'prestasex_css',
             $path .'/css/styles.css',
@@ -130,5 +125,26 @@ class Prestasex extends Module
         $this->context->smarty->assign('comments', $this->manager->getComments(3));
 
         return $this->display(__FILE__, 'displayReassurance.tpl');
+    }
+
+    /**
+     * @return string
+     */
+    public function hookDisplayPrestaSexHeaderColor()
+    {
+        $this->context->smarty->assign('config', $this->manager->getConfigurationValues());
+
+        return $this->display(__FILE__, 'displayPrestaSexHeaderColor.tpl');
+    }
+
+    /**
+     * @return string
+     */
+    public function hookDisplayPrestaSexHomeProducts()
+    {
+        $this->context->smarty->assign('products', $this->manager->getProductsHome());
+        $this->context->smarty->assign('config', $this->manager->getConfigurationValues());
+
+        return $this->display(__FILE__, 'displayPrestaSexHomeProducts.tpl');
     }
 }

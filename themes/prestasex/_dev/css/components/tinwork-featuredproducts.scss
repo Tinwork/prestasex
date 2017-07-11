@@ -1,0 +1,109 @@
+.featured-products  {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+#products,.featured-products,.product-accessories,.product-miniature  {
+  .products {
+    width: 100%;
+    &::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+  .product-miniature {
+    width: 33.33%;
+    height: 180px;
+    float: left;
+    background-color: white;
+
+    .product-description {
+      position: absolute;
+      h1.product-title {
+        font-family: 'Crimson Text';
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+      }
+      .product-price-and-shipping {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+
+    .thumbnail-container {
+      display: block;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      a, img {
+        display: block;
+        width: 100%;
+      }
+
+      img {
+        height: 80%;
+      }
+
+      .cover {
+        position: absolute;
+        top: 0; bottom: 0;
+        right: 0; left: 0;
+        z-index: 10;
+        transition: all 0.4s;
+        opacity: 0.4;
+
+        text-align: center;
+        padding: 10px 0;
+
+        a {
+          color: white!important;
+          height: 100%;
+        }
+
+        h1.product-title {
+          display: block;
+          width: 100%;
+
+          font-family: 'Crimson Text';
+          font-size: 14px;
+          margin: 0 auto;
+          padding: 0;
+
+          position: absolute;
+          bottom: 18px; left: 50%;
+
+          transform: translateX(-50%);
+        }
+        .product-price-and-shipping {
+          margin: 0;
+          padding: 0;
+          font-size: 12px;
+          font-weight: bold;
+
+          position: absolute;
+          bottom: 2px; left: 50%;
+
+          transform: translateX(-50%);
+        }
+      }
+
+      .see-more {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        z-index: 20;
+
+        a {
+          color: white!important;
+        }
+        .material-icons {
+          font-size: 21px;
+        }
+      }
+    }
+  }
+}
