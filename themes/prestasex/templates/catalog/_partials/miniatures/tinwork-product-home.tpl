@@ -13,9 +13,9 @@
             </div>
             {block name='product_thumbnail'}
                 <img
-                    src = "{$product.cover.bySize.home_default.url}"
-                    alt = "{$product.cover.legend}"
-                    data-full-size-image-url = "{$product.cover.large.url}"
+                        src = "{$product.cover.bySize.home_default.url}"
+                        alt = "{$product.cover.legend}"
+                        data-full-size-image-url = "{$product.cover.large.url}"
                 >
             {/block}
             <span id="see-more" class="see-more">

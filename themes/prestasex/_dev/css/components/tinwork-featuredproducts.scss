@@ -68,10 +68,13 @@
           display: block;
           width: 100%;
 
-          font-family: 'Crimson Text';
-          font-size: 14px;
+          font-family: 'Open Sans', sans-serif!important;
+          font-weight: bold;
+          font-size: 12px;
           margin: 0 auto;
           padding: 0;
+
+          text-transform: capitalize!important;
 
           position: absolute;
           bottom: 18px; left: 50%;

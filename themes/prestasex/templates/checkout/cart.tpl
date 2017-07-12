@@ -27,10 +27,9 @@
 {block name='content'}
 
   <section id="main">
-    <div class="cart-grid row">
-
+    <div class="cart-grid">
       <!-- Left Block: cart product informations & shpping -->
-      <div class="cart-grid-body col-xs-12 col-lg-8">
+      <div class="cart-grid-body col-xs-12 col-lg-12">
 
         <!-- cart products detailed -->
         <div class="card cart-container">
@@ -56,7 +55,7 @@
       </div>
 
       <!-- Right Block: cart subtotal & cart total -->
-      <div class="cart-grid-right col-xs-12 col-lg-4">
+      <div class="cart-grid-right col-xs-12 col-lg-12">
 
         {block name='cart_summary'}
           <div class="card cart-summary">

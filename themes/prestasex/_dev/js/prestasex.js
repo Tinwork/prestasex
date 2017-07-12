@@ -8,7 +8,12 @@ $(document).ready(() => {
     jQuery('div.thumbnail-container').hover(
         function() {
             let cover = $(this).find('div.cover');
-            cover.css('background-color', itemHoverColor);
+            if (typeof itemHoverColor === 'undefined') {
+                let itemHoverColor = $('.header-logo').css('background-color');
+                cover.css('background-color', itemHoverColor);
+            } else {
+                cover.css('background-color', itemHoverColor);
+            }
         }, function() {
             let cover = $(this).find('div.cover');
             cover.css('background-color', 'transparent');

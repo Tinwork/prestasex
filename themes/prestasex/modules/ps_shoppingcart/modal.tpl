@@ -18,9 +18,6 @@
                 <h6 class="h6 product-name">{$product.name}</h6>
                 <p>{$product.price}</p>
                 {hook h='displayProductPriceBlock' product=$product type="unit_price"}
-                {foreach from=$product.attributes item="property_value" key="property"}
-                  <span><strong>{$property}</strong>: {$property_value}</span><br>
-                {/foreach}
                 <p><strong>{l s='Quantity:' d='Shop.Theme.Checkout'}</strong>&nbsp;{$product.cart_quantity}</p>
               </div>
             </div>
@@ -39,8 +36,8 @@
               {/if}
               <p><strong>{l s='Total:' d='Shop.Theme.Checkout'}</strong>&nbsp;{$cart.totals.total.value} {$cart.labels.tax_short}</p>
               <div class="cart-content-btn">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{l s='Continue shopping' d='Shop.Theme.Actions'}</button>
-                <a href="{$cart_url}" class="btn btn-primary"><i class="material-icons">&#xE876;</i>{l s='proceed to checkout' d='Shop.Theme.Actions'}</a>
+                <button type="button" style="display: block;" class="btn btn-secondary" data-dismiss="modal">{l s='Continue shopping' d='Shop.Theme.Actions'}</button>
+                <a href="{$cart_url}" style="display: block; width: 30%;" class="btn btn-primary">{l s='proceed to checkout' d='Shop.Theme.Actions'}</a>
               </div>
             </div>
           </div>
