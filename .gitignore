@@ -6,7 +6,6 @@
 /themes/*/_dev/node_modules
 
 # Generates files
-/themes/*/assets/
 
 # Caches files
 /themes/*/cache
